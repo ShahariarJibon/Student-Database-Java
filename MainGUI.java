@@ -1,10 +1,12 @@
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -216,28 +219,34 @@ public class MainGUI extends JFrame {
         JPanel view = new JPanel(new BorderLayout(0, 14));
         view.setOpaque(false);
 
-        JPanel actions = cardPanel(new BorderLayout(12, 12));
-        JPanel filters = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 8));
+        JPanel actions = cardPanel(new BorderLayout(0, 14));
+        JPanel filters = new JPanel(new GridBagLayout());
         filters.setOpaque(false);
-        searchField = modernField(18);
-        disciplineFilter = new JComboBox<>(withAll(Student.DISCIPLINES));
-        statusFilter = new JComboBox<>(withAll(Student.STATUSES));
-        semesterFilter = new JComboBox<>(semesterChoices());
-        sortFilter = new JComboBox<>(SortOption.values());
-        filters.add(label("Search"));
-        filters.add(searchField);
-        filters.add(label("Discipline"));
-        filters.add(disciplineFilter);
-        filters.add(label("Status"));
-        filters.add(statusFilter);
-        filters.add(label("Semester"));
-        filters.add(semesterFilter);
-        filters.add(label("Sort"));
-        filters.add(sortFilter);
+        searchField = modernField(24);
+        searchField.setPreferredSize(new Dimension(280, 38));
+        disciplineFilter = modernComboBox(withAll(Student.DISCIPLINES));
+        statusFilter = modernComboBox(withAll(Student.STATUSES));
+        semesterFilter = modernComboBox(semesterChoices());
+        sortFilter = modernComboBox(SortOption.values());
+        disciplineFilter.setPreferredSize(new Dimension(180, 38));
+        statusFilter.setPreferredSize(new Dimension(145, 38));
+        semesterFilter.setPreferredSize(new Dimension(110, 38));
+        sortFilter.setPreferredSize(new Dimension(190, 38));
+
+        GridBagConstraints filterGbc = new GridBagConstraints();
+        filterGbc.insets = new Insets(4, 7, 4, 7);
+        filterGbc.fill = GridBagConstraints.HORIZONTAL;
+        addToolbarField(filters, filterGbc, 0, 0, "Search", searchField, 1.5);
+        addToolbarField(filters, filterGbc, 2, 0, "Discipline", disciplineFilter, 0.8);
+        addToolbarField(filters, filterGbc, 4, 0, "Status", statusFilter, 0.6);
+        addToolbarField(filters, filterGbc, 0, 1, "Semester", semesterFilter, 0.4);
+        addToolbarField(filters, filterGbc, 2, 1, "Sort", sortFilter, 0.8);
 
         JPanel actionButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
         actionButtons.setOpaque(false);
         JButton addButton = primaryButton("Add Student");
+        addButton.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        addButton.setPreferredSize(new Dimension(150, 44));
         JButton editButton = secondaryButton("Edit");
         JButton deleteButton = dangerButton("Delete");
         JButton clearButton = secondaryButton("Clear Filters");
@@ -246,7 +255,7 @@ public class MainGUI extends JFrame {
         actionButtons.add(deleteButton);
         actionButtons.add(clearButton);
         actions.add(filters, BorderLayout.CENTER);
-        actions.add(actionButtons, BorderLayout.EAST);
+        actions.add(actionButtons, BorderLayout.SOUTH);
 
         String[] columns = {
                 "ID", "Name", "Discipline", "Semester", "CGPA",
@@ -286,7 +295,7 @@ public class MainGUI extends JFrame {
         pageInfoLabel = new JLabel("Page 1 of 1");
         pageInfoLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
         pageInfoLabel.setForeground(TEXT);
-        pageSizeCombo = new JComboBox<>(new Integer[] {10, 20, 50, 100});
+        pageSizeCombo = modernComboBox(new Integer[] {10, 20, 50, 100});
         pageControls.add(firstButton);
         pageControls.add(previousButton);
         pageControls.add(pageInfoLabel);
@@ -639,19 +648,19 @@ public class MainGUI extends JFrame {
 
         JTextField id = modernField(16);
         JTextField name = modernField(16);
-        JComboBox<String> discipline = new JComboBox<>(Student.DISCIPLINES);
+        JComboBox<String> discipline = modernComboBox(Student.DISCIPLINES);
         JTextField email = modernField(16);
         JTextField phone = modernField(16);
         JTextField address = modernField(16);
         JSpinner semester = new JSpinner(new SpinnerNumberModel(1, 1, 12, 1));
         JSpinner cgpa = new JSpinner(new SpinnerNumberModel(0.0, 0.0, 4.0, 0.01));
         JSpinner credits = new JSpinner(new SpinnerNumberModel(0, 0, 260, 1));
-        JComboBox<String> status = new JComboBox<>(Student.STATUSES);
+        JComboBox<String> status = modernComboBox(Student.STATUSES);
         JTextField admission = modernField(16);
         JTextField dob = modernField(16);
         JTextField guardian = modernField(16);
         JTextField emergency = modernField(16);
-        JComboBox<String> blood = new JComboBox<>(Student.BLOOD_GROUPS);
+        JComboBox<String> blood = modernComboBox(Student.BLOOD_GROUPS);
         JTextArea notes = new JTextArea(4, 18);
         notes.setLineWrap(true);
         notes.setWrapStyleWord(true);
@@ -747,6 +756,17 @@ public class MainGUI extends JFrame {
         gbc.gridx = 1;
         gbc.weightx = 1;
         form.add(field, gbc);
+    }
+
+    private void addToolbarField(JPanel panel, GridBagConstraints gbc, int gridx, int gridy,
+                                 String text, java.awt.Component field, double weightx) {
+        gbc.gridy = gridy;
+        gbc.gridx = gridx;
+        gbc.weightx = 0;
+        panel.add(label(text), gbc);
+        gbc.gridx = gridx + 1;
+        gbc.weightx = weightx;
+        panel.add(field, gbc);
     }
 
     private void afterDataChange(String message) {
@@ -881,6 +901,35 @@ public class MainGUI extends JFrame {
                 BorderFactory.createLineBorder(BORDER),
                 new EmptyBorder(7, 9, 7, 9)));
         return field;
+    }
+
+    private <T> JComboBox<T> modernComboBox(T[] values) {
+        JComboBox<T> comboBox = new JComboBox<>(values);
+        comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        comboBox.setBackground(CARD_BG);
+        comboBox.setForeground(TEXT);
+        comboBox.setBorder(BorderFactory.createLineBorder(BORDER));
+        comboBox.setMaximumRowCount(10);
+        comboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(
+                        list, value == null ? "" : value, index, isSelected, cellHasFocus);
+                label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+                label.setBorder(new EmptyBorder(6, 9, 6, 9));
+                label.setOpaque(true);
+                if (isSelected) {
+                    label.setBackground(SIDEBAR_ACTIVE);
+                    label.setForeground(Color.WHITE);
+                } else {
+                    label.setBackground(CARD_BG);
+                    label.setForeground(TEXT);
+                }
+                return label;
+            }
+        });
+        return comboBox;
     }
 
     private JButton primaryButton(String text) {
