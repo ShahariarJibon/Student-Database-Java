@@ -1,0 +1,25 @@
+# Java build output
+*.class
+*.jar
+*.war
+*.ear
+out/
+target/
+build/
+
+# Local IDE files
+.idea/
+.vscode/
+*.iml
+
+# Runtime data and backups
+students.dat
+students.txt
+backups/
+
+# Generated documentation
+doc/
+
+# OS files
+.DS_Store
+Thumbs.db
