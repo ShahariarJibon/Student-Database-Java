@@ -41,4 +41,3 @@ java Main
 - `StudentStatistics.java` - analytics data model
 - `StudentSearchCriteria.java` - search/filter criteria
 - `SortOption.java` - student sorting options
-"# Student-Database-Java" 
