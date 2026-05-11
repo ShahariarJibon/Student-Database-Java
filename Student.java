@@ -1,12 +1,5 @@
 import java.io.Serializable;
 
-/**
- * Student class inheriting from Person.
- * Demonstrates inheritance.
- * 
- * @author JIBON
- * @version 1.0
- */
 public class Student extends Person implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -24,9 +17,6 @@ public class Student extends Person implements Serializable {
     private String bloodGroup;
     private String notes;
     
-    /**
-     * Available disciplines.
-     */
     public static final String[] DISCIPLINES = {
             "CSE", "ECE", "EEE", "BBA", "Mathematics", "Physics",
             "URP", "Architecture", "Civil Engineering", "Mechanical Engineering"
@@ -40,9 +30,6 @@ public class Student extends Person implements Serializable {
             "", "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"
     };
     
-    /**
-     * Default constructor.
-     */
     public Student() {
         super();
         this.semester = 1;
@@ -57,15 +44,6 @@ public class Student extends Person implements Serializable {
         this.notes = "";
     }
     
-    /**
-     * Parameterized constructor.
-     * @param studentId Student ID
-     * @param name Name
-     * @param discipline Discipline
-     * @param email Email
-     * @param phoneNumber Phone number
-     * @param address Address
-     */
     public Student(String studentId, String name, String discipline,
                String email, String phoneNumber, String address) {
         this(studentId, name, discipline, email, phoneNumber, address,
@@ -93,42 +71,18 @@ public class Student extends Person implements Serializable {
         this.notes = notes;
     }
     
-    /**
-     * Gets the student ID.
-     * @return Student ID
-     */
     public String getStudentId() { return studentId == null ? "" : studentId; }
     
-    /**
-     * Sets the student ID.
-     * @param studentId Student ID to set
-     */
     public void setStudentId(String studentId) { this.studentId = studentId; }
     
-    /**
-     * Gets the discipline.
-     * @return Discipline
-     */
     public String getDiscipline() {
         return discipline == null || discipline.trim().isEmpty() ? DISCIPLINES[0] : discipline;
     }
     
-    /**
-     * Sets the discipline.
-     * @param discipline Discipline to set
-     */
     public void setDiscipline(String discipline) { this.discipline = discipline; }
     
-    /**
-     * Gets the email.
-     * @return Email
-     */
     public String getEmail() { return email == null ? "" : email; }
     
-    /**
-     * Sets the email.
-     * @param email Email to set
-     */
     public void setEmail(String email) { this.email = email; }
 
     public int getSemester() { return semester <= 0 ? 1 : semester; }
@@ -186,11 +140,6 @@ public class Student extends Person implements Serializable {
         return "At Risk";
     }
     
-    /**
-     * Overridden toString method.
-     * Demonstrates polymorphism.
-     * @return String representation
-     */
     @Override
     public String toString() {
         return "Student ID: " + studentId + "\nName: " + getName() +
@@ -200,10 +149,6 @@ public class Student extends Person implements Serializable {
                "\nCredits: " + completedCredits + "\nStatus: " + status;
     }
     
-    /**
-     * Gets details for file storage.
-     * @return Formatted string
-     */
     public String getDetailsForFile() {
         return studentId + "," + getName() + "," + discipline + "," +
                email + "," + getPhoneNumber() + "," + getAddress() + "," +

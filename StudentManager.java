@@ -10,9 +10,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Indexed manager for student database operations.
- */
 public class StudentManager implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -193,6 +190,7 @@ public class StudentManager implements Serializable {
         return value == null ? "" : value.toLowerCase(Locale.ROOT);
     }
 
+    // Keeps older saved files readable after the manager changed from a List to an index.
     private void readObject(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
         inputStream.defaultReadObject();
         if (studentsById == null) {

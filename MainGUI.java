@@ -38,9 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Modern desktop UI for the Student Database System.
- */
 public class MainGUI extends JFrame {
     private static final Color APP_BG = new Color(245, 247, 251);
     private static final Color SIDEBAR_BG = new Color(27, 37, 53);

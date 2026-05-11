@@ -16,9 +16,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Handles binary persistence, CSV import/export, and automatic backups.
- */
 public class FileHandler {
     private static final String BINARY_FILE = "students.dat";
     private static final String TEXT_FILE = "students.txt";
@@ -143,6 +140,7 @@ public class FileHandler {
     }
 
     private List<String> parseCsv(String line) {
+        // Small CSV parser so names, addresses, and notes can safely contain commas.
         List<String> values = new ArrayList<>();
         StringBuilder current = new StringBuilder();
         boolean quoted = false;
