@@ -6,6 +6,7 @@
 out/
 target/
 build/
+dist/StudentDBPro/
 
 # Local IDE files
 .idea/
